@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -13,7 +14,7 @@ import android.widget.TextView;
  * Created by Sajib on 12/24/2017.
  */
 
-public class CustomTextView extends FrameLayout implements View.OnClickListener{
+public class CustomTextView extends FrameLayout implements View.OnClickListener, View.OnTouchListener{
     private TextView mLabelTextView;
 
     public CustomTextView(Context context) {
@@ -43,7 +44,7 @@ public class CustomTextView extends FrameLayout implements View.OnClickListener{
 
     private void init(Context context, String text) {
         LayoutInflater.from(context).inflate(R.layout.custom_text_view, this);
-        setOnClickListener(this);
+        //setOnClickListener(this);
         mLabelTextView = (TextView) findViewById(R.id.label);
         if(text!=null && text.length()>0)
             mLabelTextView.setText(text.toString());
@@ -56,5 +57,24 @@ public class CustomTextView extends FrameLayout implements View.OnClickListener{
         LinearLayout wrapperBox =  (LinearLayout)mLabelTextView.getParent();
         mLabelTextView.setVisibility(View.VISIBLE);
         wrapperBox.setBackgroundColor(Color.WHITE);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            //do something when pressed down
+            LinearLayout wrapperBox =  (LinearLayout)mLabelTextView.getParent();
+            mLabelTextView.setVisibility(View.VISIBLE);
+            wrapperBox.setBackgroundColor(Color.WHITE);
+            return true;
+        }
+        else if(event.getAction() == MotionEvent.ACTION_UP){
+            //do something when let go
+            LinearLayout wrapperBox =  (LinearLayout)mLabelTextView.getParent();
+            mLabelTextView.setVisibility(View.INVISIBLE);
+            wrapperBox.setBackgroundColor(Color.GRAY);
+            return true;
+        }
+        return false;
     }
 }
