@@ -21,17 +21,16 @@ public class DisplayMessageActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_message);
 
+        //Get the Intent from main Activity
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+
         //populate ArrayList<CustomTextView> in this method
-        createCustomViewsFromString("Once upon a time, there was a king and a man called Hercules.");
+        createCustomViewsFromString(message);
 
         //now lets show the custom views
         mContainerView = (LinearLayout) findViewById(R.id.container_view);
         showCustomTextViews();
-
-
-        //Get the Intent from main Activity
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
         //get the textview and set text
         //TextView textView = (TextView) findViewById(R.id.textView);

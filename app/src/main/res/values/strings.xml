@@ -2,6 +2,7 @@
     <string name="app_name">My Application</string>
     <string name="action_settings">Settings</string>
     <string name="default_name">Sajib Biswas</string>
+    <string name="default_message">Once upon a time, there was a god called Zeus and his son named Hercules.</string>
     <string name="send_button_text">Send</string>
 
     <!-- TODO: Remove or change this placeholder text -->
