@@ -19,6 +19,12 @@ public class CustomTextView extends FrameLayout implements View.OnClickListener{
         init(context);
     }
 
+
+    public CustomTextView(Context context, String text) {
+        super(context);
+        init(context, text);
+    }
+
     public CustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
@@ -29,11 +35,18 @@ public class CustomTextView extends FrameLayout implements View.OnClickListener{
         init(context);
     }
 
-    private void init(Context context) {
+    private void init(Context context){
+
+    }
+
+    private void init(Context context, String text) {
         LayoutInflater.from(context).inflate(R.layout.custom_text_view, this);
         setOnClickListener(this);
         mLabelTextView = (TextView) findViewById(R.id.label);
-        mLabelTextView.setText(Long.toString(System.currentTimeMillis()));
+        if(text!=null && text.length()>0)
+            mLabelTextView.setText(text.toString());
+        else
+            mLabelTextView.setText(Long.toString(System.currentTimeMillis()));
     }
 
     @Override

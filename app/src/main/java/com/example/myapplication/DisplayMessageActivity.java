@@ -1,39 +1,31 @@
 package com.example.myapplication;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import static java.security.AccessController.getContext;
-
 public class DisplayMessageActivity extends FragmentActivity {
 
-    private ViewGroup mContainerView;
-    ArrayList<CustomTextView> CustomTextViewList = new ArrayList<CustomTextView>();
+    private LinearLayout mContainerView;
+    ArrayList<CustomTextView> customTextViewList = new ArrayList<CustomTextView>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_message);
 
-
-        //add some customeview here
-        CustomTextViewList.add(new CustomTextView(DisplayMessageActivity.this));
-        CustomTextViewList.add(new CustomTextView(DisplayMessageActivity.this));
-        CustomTextViewList.add(new CustomTextView(DisplayMessageActivity.this));
+        //populate ArrayList<CustomTextView> in this method
+        createCustomViewsFromString("Once upon a time, there was a king and a man called Hercules.");
 
         //now lets show the custom views
-        mContainerView = (ViewGroup)findViewById(R.id.container_view);
+        mContainerView = (LinearLayout) findViewById(R.id.container_view);
         showCustomTextViews();
 
 
@@ -44,6 +36,17 @@ public class DisplayMessageActivity extends FragmentActivity {
         //get the textview and set text
         //TextView textView = (TextView) findViewById(R.id.textView);
         //textView.setText(message);
+    }
+
+
+    private void createCustomViewsFromString(String completeText){
+        //find how many words in the text
+        String []words = completeText.split("\\s+");
+
+        //add one customeview for each word
+        for(String word : words){
+            customTextViewList.add(new CustomTextView(DisplayMessageActivity.this, word));
+        }
     }
 
     private void showCustomTextViews() {
@@ -60,7 +63,7 @@ public class DisplayMessageActivity extends FragmentActivity {
 
         int widthSoFar = 0;
 
-        for (CustomTextView customTextView : CustomTextViewList) {
+        for (CustomTextView customTextView : customTextViewList) {
 
             LinearLayout LL = new LinearLayout(DisplayMessageActivity.this);
             LL.setOrientation(LinearLayout.HORIZONTAL);
