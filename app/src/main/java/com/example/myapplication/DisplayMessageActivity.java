@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class DisplayMessageActivity extends FragmentActivity {
 
-    private LinearLayout mContainerView;
+    private LinearLayout mContainerView; //Replace this LinearLayout with a ListView
     ArrayList<CustomTextView> customTextViewList = new ArrayList<CustomTextView>();
 
     @Override

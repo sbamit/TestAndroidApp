@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
+        <!--<TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
@@ -20,9 +20,9 @@
             android:textColor="@color/colorAccent"
             android:textSize="24sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" /> -->
 
-        <fragment
+        <!--<fragment
             android:id="@+id/fragment2"
             android:name="com.example.myapplication.Example2"
             android:layout_width="266dp"
@@ -33,6 +33,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout="@layout/fragment_example2" />
+            tools:layout="@layout/fragment_example2" />-->
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
