@@ -47,7 +47,7 @@ public class CustomTextView extends FrameLayout implements View.OnClickListener,
         //setOnClickListener(this);
         mLabelTextView = (TextView) findViewById(R.id.label);
         if(text!=null && text.length()>0)
-            mLabelTextView.setText(text.toString());
+            mLabelTextView.setText(text);
         else
             mLabelTextView.setText(Long.toString(System.currentTimeMillis()));
     }
