@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 public class CustomTextView extends FrameLayout implements View.OnClickListener, View.OnTouchListener{
     private TextView mLabelTextView;
+    public String text;
 
     public CustomTextView(Context context) {
         super(context);
@@ -25,6 +26,7 @@ public class CustomTextView extends FrameLayout implements View.OnClickListener,
 
     public CustomTextView(Context context, String text) {
         super(context);
+        this.text = text;
         init(context, text);
     }
 
