@@ -36,7 +36,7 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return dataset.size(); //how many lines? yo
+        return dataset.size(); //how many lines? llTestHolder
     }
 
     @Override
@@ -55,7 +55,7 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         this.length = 0;
         //using view holder so that we gotta call findViewById() method only once, when the layout is first created
-        Log.e("getview called ","yo");
+        Log.e("getview called ","llTestHolder");
         Model m = dataset.get(position);
         Log.e("line number ",String.valueOf(position));
         Log.e("line number size ",String.valueOf(m.strings.size())); //why do each m has exactly 15 words? :|

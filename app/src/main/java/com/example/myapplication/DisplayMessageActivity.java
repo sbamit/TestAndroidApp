@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,9 +21,6 @@ public class DisplayMessageActivity extends FragmentActivity {
 
     //for testText
     public int length;
-
-    public int display_width;
-
     public int last_storage=0;
 
     //author
@@ -34,12 +29,6 @@ public class DisplayMessageActivity extends FragmentActivity {
     ArrayList<Model> temp; //to be passed to the custom adapter
     //author
 
-    //save all the words in a single cell
-    ArrayList<String> storage; //save the strings
-
-    ArrayList<String> storage1; //save the strings
-    ArrayList<String> storage2; //save the strings
-    ArrayList<String> storage3; //save the strings
 
     ArrayList<Integer> breakpoint;
 
@@ -47,11 +36,10 @@ public class DisplayMessageActivity extends FragmentActivity {
 
     //previous approach
     private LinearLayout mContainerView; //Replace this LinearLayout with a ListView
-    ArrayList<CustomTextView> customTextViewList = new ArrayList<CustomTextView>();
     HiddenTextViewClickListener hiddenTextViewClickListener = new HiddenTextViewClickListener();
 
     TextView testText;
-    LinearLayout yo;
+    LinearLayout llTestHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,18 +49,15 @@ public class DisplayMessageActivity extends FragmentActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_display_message);
         listView = (ListView) findViewById(R.id.list_view);
-        yo = (LinearLayout) findViewById(R.id.yo);
+        llTestHolder = (LinearLayout) findViewById(R.id.test_holder);
 
         //allocate memory
         temp = new ArrayList<Model>();
 
         testText = (TextView) findViewById(R.id.test); //faakibazi.xmls
 
-        storage = new ArrayList<String>();
-        storage1 = new ArrayList<String>();
-        storage2 = new ArrayList<String>();
-        storage3 = new ArrayList<String>();
-        breakpoint = new ArrayList<Integer>();
+        ArrayList<String> storage = new ArrayList<>();; //save the strings
+        breakpoint = new ArrayList<>();
 
         //Get the Intent from main Activity
         Intent intent = getIntent();
@@ -86,8 +71,8 @@ public class DisplayMessageActivity extends FragmentActivity {
        //showCustomTextViews();
 
         //data creation
-        createCustomViewsFromString(message); //storage filled with the words
-        getWidth(); //get the display width first
+        storage = createWordsFromString(message); //storage filled with the words
+        int display_width = getDisplayWidth(); //get the display width first
 
         int checking = 0;
         this.length = 0;
@@ -119,7 +104,7 @@ public class DisplayMessageActivity extends FragmentActivity {
         //
         Log.e("breakpoint size ",String.valueOf(breakpoint.size()));
 
-        ArrayList<Integer> bhai = new ArrayList<Integer>();
+        ArrayList<Integer> bhai = new ArrayList<>();
         bhai.add(breakpoint.get(0));
         for(int i=1;i<breakpoint.size();i++){
             Log.e("breakpoints ",String.valueOf(breakpoint.get(i)));
@@ -127,13 +112,13 @@ public class DisplayMessageActivity extends FragmentActivity {
         }
 
         for(int i=0;i<bhai.size();i++){
-            Log.e("yo ",String.valueOf(bhai.get(i)));
+            Log.e("llTestHolder ",String.valueOf(bhai.get(i)));
         }
 
         int iterator = 0;
 
         for(int i=0;i<bhai.size();i++){
-            ArrayList<String> p = new ArrayList<String>();
+            ArrayList<String> p = new ArrayList<>();
             for(int j=0;j<bhai.get(i);j++){
                 p.add(storage.get(iterator+j));
             }
@@ -143,7 +128,7 @@ public class DisplayMessageActivity extends FragmentActivity {
             temp.add(m);
         }
 
-        ArrayList<String> p1 = new ArrayList<String>();
+        ArrayList<String> p1 = new ArrayList<>();
         for(int k =iterator;k<storage.size();k++){
             p1.add(storage.get(k));
         }
@@ -151,39 +136,8 @@ public class DisplayMessageActivity extends FragmentActivity {
         m1.strings = p1;
         temp.add(m1);
 
-        yo.setVisibility(View.GONE);
+        llTestHolder.setVisibility(View.GONE);
         testText.setText("");
-
-
-
-        //test raw data
-        /*Model m1 = new Model();
-        storage1.add("once");
-        storage1.add("upon");
-        storage1.add("a");
-        storage1.add("time,");
-        m1.strings = storage1;
-        temp.add(m1);
-
-
-        storage2.add("there");
-        storage2.add("was");
-        storage2.add("a");
-        storage2.add("god");
-        storage2.add("called");
-        storage2.add("zeus");
-        Model m2 = new Model();
-        m2.strings = storage2;
-        temp.add(m2);
-
-        storage3.add("and");
-        storage3.add("his");
-        storage3.add("son");
-        storage3.add("named");
-        storage3.add("hercules");
-        Model m3 = new Model();
-        m3.strings = storage3;
-        temp.add(m3);*/
 
 
 
@@ -194,7 +148,7 @@ public class DisplayMessageActivity extends FragmentActivity {
         //Log.e("check ",String.valueOf(customAdapter.dataset.size()));
 
 
-        customAdapter = new CustomAdapter(DisplayMessageActivity.this,temp,display_width);
+        customAdapter = new CustomAdapter(DisplayMessageActivity.this, temp, display_width);
 
         listView.setAdapter(customAdapter);
 
@@ -208,76 +162,22 @@ public class DisplayMessageActivity extends FragmentActivity {
     }
 
 
-    private void createCustomViewsFromString(String completeText){
+    private ArrayList<String> createWordsFromString(String completeText){
         //find how many words in the text
         String []words = completeText.split("\\s+");
-
+        ArrayList<String> storage = new ArrayList<>();
         //add one customeview for each word
         for(String word : words){
-            customTextViewList.add(new CustomTextView(DisplayMessageActivity.this, word));
             storage.add(word); //adding the words here //done
         }
+        return storage;
     }
 
-    private void getWidth(){ //test method
+    private int getDisplayWidth(){ //test method
         Display display = getWindowManager().getDefaultDisplay();
-        display_width = display.getWidth() - 20;
+        return display.getWidth() - 20;
     }
 
-    private void showCustomTextViews() {
-        Display display = getWindowManager().getDefaultDisplay();
-        //mContainerView.removeAllViewsInLayout();
-        //mContainerView.removeAllViews();
-        int maxWidth = display.getWidth();
-
-        LinearLayout.LayoutParams params;
-        LinearLayout newLL = new LinearLayout(DisplayMessageActivity.this);
-        newLL.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-        newLL.setGravity(Gravity.LEFT);
-        newLL.setOrientation(LinearLayout.HORIZONTAL);
-
-        int widthSoFar = 0;
-
-        Model m = new Model(); //
-
-        for (CustomTextView customTextView : customTextViewList) {
-
-            LinearLayout LL = new LinearLayout(DisplayMessageActivity.this);
-            LL.setOrientation(LinearLayout.HORIZONTAL);
-            LL.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-            LL.setLayoutParams(new ListView.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-            customTextView.measure(0, 0);
-            params = new LinearLayout.LayoutParams(customTextView.getMeasuredWidth(), FrameLayout.LayoutParams.WRAP_CONTENT);
-            LL.addView(customTextView, params);
-            LL.measure(0, 0);
-            widthSoFar += customTextView.getMeasuredWidth();
-            if (widthSoFar >= maxWidth) {
-                Log.e("size found ",String.valueOf(m.strings.size()));
-                temp.add(m);
-                Log.e("final data size ",String.valueOf(temp.size()));
-                m.strings.clear();
-                Log.e("erased? ",String.valueOf(m.strings.size()));
-                newLL.setOnTouchListener(hiddenTextViewClickListener);
-                //mContainerView.addView(newLL);
-                newLL.setOnTouchListener(hiddenTextViewClickListener);
-                newLL = new LinearLayout(DisplayMessageActivity.this);
-                newLL.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT));
-                newLL.setOrientation(LinearLayout.HORIZONTAL);
-                newLL.setGravity(Gravity.LEFT);
-                params = new LinearLayout.LayoutParams(LL.getMeasuredWidth(), LL.getMeasuredHeight());
-                newLL.addView(LL, params);
-                widthSoFar = LL.getMeasuredWidth();
-            } else {
-                newLL.addView(LL);
-                m.strings.add(customTextView.text);
-            }
-        }
-        Log.e("size found ",String.valueOf(m.strings.size()));
-        newLL.setOnTouchListener(hiddenTextViewClickListener);
-        //mContainerView.addView(newLL);
-        temp.add(m);
-        Log.e("final data size ",String.valueOf(temp.size()));
-    }
 
     class HiddenTextViewClickListener implements View.OnClickListener, View.OnTouchListener{
         @Override
