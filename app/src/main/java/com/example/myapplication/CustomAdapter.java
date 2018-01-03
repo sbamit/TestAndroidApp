@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -50,6 +53,18 @@ public class CustomAdapter extends BaseAdapter {
     }
 
 
+    /*View.OnTouchListener itemTouch = new View.OnTouchListener() {
+        private int position;
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            //TextView tv = (TextView) v.findViewById(R.id.tv1);
+            String itemTag = v.getTag().toString();
+            int itemPosition = Integer.parseInt(itemTag);
+            Log.d("touch", "on"+itemPosition);
+            return true;
+        }
+    };*/
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -65,7 +80,8 @@ public class CustomAdapter extends BaseAdapter {
              mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.test, parent,false);
             viewholder = new ViewHolder(convertView);
-            convertView.setTag(viewholder);
+            convertView.setTag("" + position);
+            //convertView.setOnTouchListener(itemTouch);
         }
         else {
             viewholder = (ViewHolder) convertView.getTag();

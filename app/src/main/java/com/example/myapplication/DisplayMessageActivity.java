@@ -1,12 +1,14 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -194,7 +196,7 @@ public class DisplayMessageActivity extends FragmentActivity {
         customAdapter = new CustomAdapter(DisplayMessageActivity.this,temp,display_width);
 
         listView.setAdapter(customAdapter);
-
+        listView.setOnTouchListener(touchListener);
         //  listView.setAdapter(customAdapter);
         // listView.setVisibility(View.VISIBLE);
         //listView.setAdapter(customAdapter);
@@ -203,6 +205,56 @@ public class DisplayMessageActivity extends FragmentActivity {
 
 
     }
+    View.OnTouchListener touchListener = new View.OnTouchListener() {
+        private float mDownX;
+        private boolean mSwiping;
+        private VelocityTracker mVelocityTracker;
+        private int mDownPosition = -1;
+        private View mDownView;
+        private boolean mPaused;
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            
+            switch (motionEvent.getActionMasked()) {
+                case MotionEvent.ACTION_MOVE: {
+                    if (mPaused) {
+                        return false;
+                    }
+
+                    // TODO: ensure this is a finger, and set a flag
+
+                    // Find the child view that was touched (perform a hit test)
+                    Rect rect = new Rect();
+                    int childCount = listView.getChildCount();
+                    int[] listViewCoords = new int[2];
+                    listView.getLocationOnScreen(listViewCoords);
+                    int x = (int) motionEvent.getRawX() - listViewCoords[0];
+                    int y = (int) motionEvent.getRawY() - listViewCoords[1];
+                    View child;
+                    for (int i = 0; i < childCount; i++) {
+                        child = listView.getChildAt(i);
+                        child.getHitRect(rect);
+                        if (rect.contains(x, y)) {
+                            mDownView = child; // This is your down view
+                            break;
+                        }
+                    }
+
+                    if (mDownView != null) {
+                        mDownX = motionEvent.getRawX();
+
+                        mDownPosition = listView.getPositionForView(mDownView);
+                        Log.d("Touch","on position"+mDownPosition);
+                        mVelocityTracker = VelocityTracker.obtain();
+                        mVelocityTracker.addMovement(motionEvent);
+                    }
+                    view.onTouchEvent(motionEvent);
+                    return true;
+                }
+               
+            }
+            return false;
+        }
+    };
 
 
     private void createCustomViewsFromString(String completeText){
