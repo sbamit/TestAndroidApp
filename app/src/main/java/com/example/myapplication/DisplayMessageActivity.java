@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -209,16 +211,20 @@ public class DisplayMessageActivity extends FragmentActivity {
         private float mDownX;
         private boolean mSwiping;
         private VelocityTracker mVelocityTracker;
-        private int mDownPosition = -1;
+        private int mDownPosition;
         private View mDownView;
-        private boolean mPaused;
+        //private boolean mPaused;
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            
-            switch (motionEvent.getActionMasked()) {
-                case MotionEvent.ACTION_MOVE: {
-                    if (mPaused) {
+            int action = motionEvent.getActionMasked();
+
+            if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
+                switchViewVisibility(0,View.VISIBLE);
+            }
+            else if (MotionEvent.ACTION_MOVE == action || MotionEvent.ACTION_DOWN == action ) {
+
+                    /*if (mPaused) {
                         return false;
-                    }
+                    }*/
 
                     // TODO: ensure this is a finger, and set a flag
 
@@ -243,18 +249,47 @@ public class DisplayMessageActivity extends FragmentActivity {
                         mDownX = motionEvent.getRawX();
 
                         mDownPosition = listView.getPositionForView(mDownView);
-                        Log.d("Touch","on position"+mDownPosition);
+                        switchViewVisibility(mDownPosition, View.INVISIBLE);
+                        Log.d("Touch","on position"+ mDownPosition);
                         mVelocityTracker = VelocityTracker.obtain();
                         mVelocityTracker.addMovement(motionEvent);
                     }
                     view.onTouchEvent(motionEvent);
                     return true;
-                }
+
                
             }
             return false;
         }
     };
+
+
+    private  void switchViewVisibility(int position, int visibility) {
+        View listItem;
+        //Take ListView And make text hide
+        try {
+            final int firstListItemPosition = listView.getFirstVisiblePosition();
+            final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+            if (position < firstListItemPosition || position > lastListItemPosition) {
+                //This may occure using Android Monkey, else will work otherwise
+                listItem = listView.getAdapter().getView(position, null, listView);
+            } else {
+                final int childIndex = position - firstListItemPosition;
+                listItem = listView.getChildAt(childIndex);
+            }
+            listItem.setVisibility(visibility); //this will switch based on motion event
+
+            //make all other rows visible
+            for(int index=firstListItemPosition; index<lastListItemPosition; index++) {
+                if(index!=position)
+                    listView.getChildAt(index).setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     private void createCustomViewsFromString(String completeText){

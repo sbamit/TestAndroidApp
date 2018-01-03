@@ -2,7 +2,7 @@
     <string name="app_name">My Application</string>
     <string name="action_settings">Settings</string>
     <string name="default_name">Sajib Biswas</string>
-    <string name="default_message">The onInterceptTouchEvent method is called whenever a touch event is detected on the surface of a ViewGroup, including on the surface of its children. If onInterceptTouchEvent returns true, the MotionEvent is intercepted, meaning it is not passed on to the child, but rather to the onTouchEvent method of the parent. The onInterceptTouchEvent method is called whenever a touch event is detected on the surface of a ViewGroup, including on the surface of its children. If onInterceptTouchEvent returns true, the MotionEvent is intercepted.</string>
+    <string name="default_message">The onInterceptTouchEvent method is called whenever a touch event is detected on the surface of a ViewGroup, including on the surface of its children. If onInterceptTouchEvent returns true, the MotionEvent is intercepted, meaning it is not passed on to the child, but rather to the onTouchEvent method of the parent. The onInterceptTouchEvent method is called whenever a touch event is detected on the surface of a ViewGroup, including on the surface of its children. If onInterceptTouchEvent returns true, the MotionEvent is intercepted, , meaning it is not passed on to the child, but rather to the onTouchEvent method of the parent.</string>
     <string name="send_button_text">Send</string>
 
     <!-- TODO: Remove or change this placeholder text -->
