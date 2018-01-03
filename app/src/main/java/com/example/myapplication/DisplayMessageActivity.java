@@ -84,7 +84,7 @@ public class DisplayMessageActivity extends FragmentActivity {
             testText.setText(s);
             testText.measure(0,0);
             this.length+=testText.getMeasuredWidth();
-            if(length>=display_width-100){
+            if(length>=display_width-200){
                 if(last_storage==0) {
                     breakpoint.add(i);
                 }
